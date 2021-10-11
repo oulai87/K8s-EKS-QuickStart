@@ -3,7 +3,17 @@ name: "Deploy-EKS-user-def-VPC"
 
 on:
   workflow_dispatch:
+    inputs:
+      subnets:
+        description: 'Enter space-separated subnet values'     
+        required: true
+        type: string
 
+      vpc-id:
+        description: 'Enter vpc ID'
+        required: true
+        type: string
+    
 jobs:
   terraform:
     name: "Terraform"
@@ -25,9 +35,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Set Terraform Variables
+        run: |
+          li=$(python -c "print(list((${github.event.inputs.subnets}).split(\" \")))")
+          echo $li
+          export TF_VAR_existing_vpc_id=${github.event.inputs.vpc-id}
+          export TF_VAR_subnet_ids=$li
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
+
 
       - name: Terraform Init
         id: init

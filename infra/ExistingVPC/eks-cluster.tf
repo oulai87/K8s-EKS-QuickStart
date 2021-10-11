@@ -5,7 +5,7 @@ module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = local.cluster_name
   cluster_version = "1.21"
-  subnets         = ["subnet-027766823d184045f","subnet-0df0d7fddc8a77d2f"]
+  subnets         = var.subnet_ids
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access = true
   cluster_iam_role_name = "VotingAppRole"
@@ -18,7 +18,7 @@ module "eks" {
     GithubOrg   = "terraform-aws-modules"
   }
 
-  vpc_id = "vpc-0665efb7de3911681"
+  vpc_id = var.existing_vpc_id
   workers_role_name = "NodeInstanceRole"
    node_groups_defaults = {
     ami_type  = "AL2_x86_64"
@@ -54,4 +54,11 @@ data "aws_eks_cluster_auth" "cluster" {
 }
 locals {
   cluster_name = "mktst-nginx"
+}
+variable "existing_vpc_id" {
+  type = string
+}
+
+variable "subnet_ids" {
+  type    = list(string)
 }
