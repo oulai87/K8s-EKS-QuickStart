@@ -1,4 +1,4 @@
-name: "Destroy-user-def-VPC"
+name: "Destroy-EKS-user-def-VPC"
 
 on:
   workflow_dispatch:
@@ -55,14 +55,14 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -var-file="dev.tfvars"
+        run: terraform plan -no-color -var-file="dev.tfvars" -destroy
         continue-on-error: true
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Terraform Apply
+      - name: Terraform Destroy
         if: github.ref == 'refs/heads/main'
         run: terraform destroy -auto-approve -var-file="dev.tfvars"
   
