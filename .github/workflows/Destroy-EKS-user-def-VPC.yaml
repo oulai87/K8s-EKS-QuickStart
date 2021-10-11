@@ -55,7 +55,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -var-file="dev.tfvars" -destroy
+        run: terraform plan -no-color -var-file="dev.tfvars" -destroy -out=tfplan
         continue-on-error: true
 
       - name: Terraform Plan Status
@@ -64,5 +64,5 @@ jobs:
 
       - name: Terraform Destroy
         if: github.ref == 'refs/heads/main'
-        run: terraform destroy -auto-approve -var-file="dev.tfvars"
+        run: terraform destroy -auto-approve -var-file="dev.tfvars" tfplan
   
