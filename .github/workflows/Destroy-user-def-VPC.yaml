@@ -1,0 +1,61 @@
+name: "Destroy-user-def-VPC"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra/ExistingVPC
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      - name: Get subnet IDs
+        run: echo ${{github.event.inputs.subnets}}
+
+      - name: Set Terraform Variables
+        run: |
+          li=$(python -c "import json;print(json.dumps(list((\"${{github.event.inputs.subnets}}\").split(\" \"))))")
+          echo $li
+          export TF_VAR_existing_vpc_id=${{github.event.inputs.vpc-id}}
+          export TF_VAR_subnet_ids=$li
+          echo "existing_vpc_id = \"${TF_VAR_existing_vpc_id}\"" > dev.tfvars
+          echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
+          cat dev.tfvars
+          
+      - name: Terraform Init
+        id: init
+        run: terraform init 
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color 
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -var-file="dev.tfvars"
+        continue-on-error: true
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform destroy -auto-approve -var-file="dev.tfvars"
+  
+  
