@@ -38,12 +38,12 @@ jobs:
 
       - name: Set Terraform Variables
         run: |
-          li=$(python -c "print(list((\"${{github.event.inputs.subnets}}\").split(\" \")))")
+          li=$(python -c "import json;print(json.dumps(list((\"${{github.event.inputs.subnets}}\").split(\" \"))))")
           echo $li
           export TF_VAR_existing_vpc_id=${{github.event.inputs.vpc-id}}
           export TF_VAR_subnet_ids=$li
-          echo "existing_vpc_id = ${TF_VAR_existing_vpc_id}" > dev.tfvar
-          echo "\nsubnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvar
+          echo "existing_vpc_id = ${TF_VAR_existing_vpc_id}" > dev.tfvars
+          echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
           cat dev.tfvar
 
       - name: Terraform Format
@@ -53,15 +53,15 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init 
       
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: terraform validate -no-color 
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -var-file="dev.tfvars"
         continue-on-error: true
 
       - name: Terraform Plan Status
@@ -70,4 +70,4 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var-file="dev.tfvars"
