@@ -42,14 +42,13 @@ jobs:
           echo $li
           export TF_VAR_existing_vpc_id=${{github.event.inputs.vpc-id}}
           export TF_VAR_subnet_ids=$li
-          echo "existing_vpc_id = ${TF_VAR_existing_vpc_id}" > dev.tfvars
+          echo "existing_vpc_id = \"${TF_VAR_existing_vpc_id}\"" > dev.tfvars
           echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
           cat dev.tfvars
 
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
-
 
       - name: Terraform Init
         id: init
