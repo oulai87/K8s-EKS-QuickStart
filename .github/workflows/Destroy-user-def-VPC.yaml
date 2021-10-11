@@ -2,6 +2,14 @@ name: "Destroy-user-def-VPC"
 
 on:
   workflow_dispatch:
+    inputs:
+      subnets:
+        description: 'Enter space-separated subnet values'     
+        required: true
+
+      vpc-id:
+        description: 'Enter vpc ID'
+        required: true
 
 jobs:
   terraform:
@@ -57,5 +65,4 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform destroy -auto-approve -var-file="dev.tfvars"
-  
   
