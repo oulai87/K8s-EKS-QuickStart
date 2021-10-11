@@ -44,7 +44,7 @@ jobs:
           export TF_VAR_subnet_ids=$li
           echo "existing_vpc_id = ${TF_VAR_existing_vpc_id}" > dev.tfvars
           echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
-          cat dev.tfvar
+          cat dev.tfvars
 
       - name: Terraform Format
         id: fmt
