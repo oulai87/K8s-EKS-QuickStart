@@ -7,12 +7,10 @@ on:
       subnets:
         description: 'Enter space-separated subnet values'     
         required: true
-        type: string
 
       vpc-id:
         description: 'Enter vpc ID'
         required: true
-        type: string
     
 jobs:
   terraform:
@@ -40,7 +38,7 @@ jobs:
 
       - name: Set Terraform Variables
         run: |
-          li=$(python -c "print(list((${{github.event.inputs.subnets}}).split(\" \")))")
+          li=$(python -c "print(list((\"${{github.event.inputs.subnets}}\").split(\" \")))")
           echo $li
           export TF_VAR_existing_vpc_id=${github.event.inputs.vpc-id}
           export TF_VAR_subnet_ids=$li
