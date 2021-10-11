@@ -36,6 +36,10 @@ jobs:
       - name: Get subnet IDs
         run: echo ${{github.event.inputs.subnets}}
 
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+     
       - name: Set Terraform Variables
         run: |
           li=$(python -c "import json;print(json.dumps(list((\"${{github.event.inputs.subnets}}\").split(\" \"))))")
@@ -45,10 +49,6 @@ jobs:
           echo "existing_vpc_id = \"${TF_VAR_existing_vpc_id}\"" > dev.tfvars
           echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
           cat dev.tfvars
-
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
 
       - name: Terraform Init
         id: init
