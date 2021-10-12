@@ -73,6 +73,10 @@ jobs:
       
       - name: Get state
         run: |
-            terraform state list
-            pwd
-            ls
+             git status
+             git add ./infra/ExistingVPCterraform.tfstate
+             git commit -m "Workflow executed to deploy resources"
+             git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
+        working-directory: .
