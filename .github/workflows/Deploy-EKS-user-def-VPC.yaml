@@ -76,7 +76,7 @@ jobs:
              git status
              git config --global user.email "mkejriwal270@gmail.com"
              git config --global user.name "Gh-Actions"
-             git add ./infra/ExistingVPC/terraform.tfstate
+             git add infra/ExistingVPC/terraform.tfstate
              git commit -m "Workflow executed to deploy resources"
              git push
         env:
