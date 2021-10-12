@@ -74,7 +74,7 @@ jobs:
       - name: Get state
         run: |
              git status
-             git add ./infra/ExistingVPCterraform.tfstate
+             git add ./infra/ExistingVPC/terraform.tfstate
              git commit -m "Workflow executed to deploy resources"
              git push
         env:
