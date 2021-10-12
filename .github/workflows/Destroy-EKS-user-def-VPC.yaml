@@ -66,3 +66,14 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
   
+      - name: Get state
+        run: |
+             git status
+             git config --global user.email "mkejriwal270@gmail.com"
+             git config --global user.name "Gh-Actions"
+             git add infra/ExistingVPC/terraform.tfstate
+             git commit -m "Workflow executed to destroy resources"
+             git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
+        working-directory: .
