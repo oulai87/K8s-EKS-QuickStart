@@ -73,6 +73,6 @@ jobs:
       
       - name: Get state
         run: |
-            terraform status list
+            terraform state list
             pwd
             ls
