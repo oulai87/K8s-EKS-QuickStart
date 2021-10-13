@@ -54,12 +54,14 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 locals {
-  cluster_name = "mktst-nginx"
+  cluster_name = var.cluster_name
 }
 variable "existing_vpc_id" {
   type = string
 }
-
+variable "cluster_name" {
+  type = string
+}
 variable "subnet_ids" {
   type = list(string)
 }
