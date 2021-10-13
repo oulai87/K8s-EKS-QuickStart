@@ -3,6 +3,10 @@ name: "Destroy-EKS-user-def-VPC"
 on:
   workflow_dispatch:
     inputs:
+      cluster_name:
+        description: 'Enter cluster name'
+        required: true
+        
       subnets:
         description: 'Enter space-separated subnet values'     
         required: true
@@ -12,7 +16,30 @@ on:
         required: true
 
 jobs:
-  terraform:
+  helm-delete:
+    name: "Helm-Delete"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./charts/infra
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
+        
+      - name: Helm delete
+        run: helm del infra
+    
+  terraform-destroy:
     name: "Terraform"
     runs-on: ubuntu-latest
     defaults:
@@ -41,8 +68,10 @@ jobs:
           echo $li
           export TF_VAR_existing_vpc_id=${{github.event.inputs.vpc-id}}
           export TF_VAR_subnet_ids=$li
+          export TF_VAR_cluster_name=${{github.event.inputs.cluster_name}}
           echo "existing_vpc_id = \"${TF_VAR_existing_vpc_id}\"" > dev.tfvars
           echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
+          echo "cluster_name = \"${TF_VAR_cluster_name}\"" >> dev.tfvars
           cat dev.tfvars
           
       - name: Terraform Init
