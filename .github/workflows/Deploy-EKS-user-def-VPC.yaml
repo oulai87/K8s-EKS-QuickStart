@@ -56,7 +56,7 @@ jobs:
           export TF_VAR_cluster_name=${{github.event.inputs.cluster_name}}
           echo "existing_vpc_id = \"${TF_VAR_existing_vpc_id}\"" > dev.tfvars
           echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
-          echo "cluster_name = ${TF_VAR_cluster_name}" >> dev.tfvars
+          echo "cluster_name = \"${TF_VAR_cluster_name}\"" >> dev.tfvars
           cat dev.tfvars
 
       - name: Terraform Init
