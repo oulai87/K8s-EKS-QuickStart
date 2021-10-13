@@ -42,6 +42,7 @@ jobs:
   terraform-destroy:
     name: "Terraform"
     runs-on: ubuntu-latest
+    needs: helm-delete
     defaults:
       run:
         working-directory: ./infra/ExistingVPC
