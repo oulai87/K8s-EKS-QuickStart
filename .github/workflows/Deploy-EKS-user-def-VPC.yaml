@@ -96,6 +96,7 @@ jobs:
   helm_install:
     name: "Helm_Install"
     runs-on: ubuntu-latest
+    needs: terraform
     defaults:
       run:
         working-directory: ./charts/infra
