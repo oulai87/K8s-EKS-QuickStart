@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: k8s-qs-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: a241a33aa65234a82882f7e7707d215b-0e272333d7235c9f.elb.us-east-1.amazonaws.com
+      http:
+        paths:
+          - path: "/angular-app"
+            backend:
+              serviceName: angular-app
+              servicePort: 80
+          - path: "/react-app"
+            backend:
+              serviceName: react-app
+              servicePort: 80
+   

@@ -6,12 +6,11 @@ replicaCount: 1
 
 image:
   repository: 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-react
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.1.0"
+  tag: "latest"
 
-imagePullSecrets:
-  - name: aws-registry
+imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
