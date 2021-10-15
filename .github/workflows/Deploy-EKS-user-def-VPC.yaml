@@ -116,4 +116,12 @@ jobs:
         
       - name: Helm install
         run: helm install infra .
-  
+        
+      - name: Setup registry
+        run: |
+          helm install --name aws-ecr-credential architectminds/aws-ecr-credential \
+          --set-string aws.account=${{ secrets.AWS_ACCOUNT }} \
+          --set aws.region=us-east-1 \
+          --set aws.accessKeyId=${{ secrets.AWS_ACCESS_KEY_ID }} \
+          --set aws.secretAccessKey=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+          --set targetNamespace=default
