@@ -24,9 +24,9 @@ on:
         type: string
         required: true
     secrets:
-      aws-access-key-id:
+      AWS-ACCESS-KEY-ID:
         required: true
-      aws-secret-access-key:
+      AWS-SECRET-ACCESS-KEY:
         required: true
         
 jobs:
