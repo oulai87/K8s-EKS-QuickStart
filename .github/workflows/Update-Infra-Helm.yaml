@@ -24,6 +24,11 @@ jobs:
         run: echo ${{ github.event.workflow_run }}
         if: ${{ github.event_name == 'workflow_run' }}
         
+      - name: View context attributes
+        uses: actions/github-script@v5
+        with:
+          script: console.log(context)
+          
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
