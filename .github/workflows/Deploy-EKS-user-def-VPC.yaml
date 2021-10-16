@@ -92,3 +92,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
         working-directory: .
+
+  helm:
+     uses: .github/workflows/Update-Infra-Helm.yaml@HEAD
+     with:
+       cluster_name: ${{github.event.inputs.cluster_name}}
