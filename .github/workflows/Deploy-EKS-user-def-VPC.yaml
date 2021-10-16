@@ -12,6 +12,7 @@ on:
       vpc-id:
         description: 'Enter vpc ID'
         required: true
+      
         
   workflow_call:
     inputs:
@@ -24,7 +25,14 @@ on:
       vpc-id:
         type: string
         required: true
-
+    secrets:
+      AWS-ACCESS-KEY-ID:
+        required: true
+      AWS-SECRET-ACCESS-KEY:
+        required: true
+      K8S_QS_TOKEN:
+        required: true
+        
 jobs:
   terraform:
     name: "Terraform"
