@@ -1,4 +1,4 @@
-name: "Deploy-Angular"
+name: "Deploy-App"
 
 on:
   workflow_dispatch:
