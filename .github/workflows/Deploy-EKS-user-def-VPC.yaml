@@ -7,6 +7,7 @@ on:
       cluster_name:
         description: 'Enter cluster name'
         required: true
+        
       subnets:
         description: 'Enter space-separated subnet values'     
         required: true
