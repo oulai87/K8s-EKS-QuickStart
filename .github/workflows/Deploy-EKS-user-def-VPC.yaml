@@ -98,9 +98,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
         working-directory: .
-        
-  helm:
-    needs: terraform
-    uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
-    with:
-      cluster_name: ${{ github.event.inputs.cluster_name }}
