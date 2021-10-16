@@ -20,29 +20,30 @@ on:
        
 jobs:
    create_cluster:
-      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-user-def-VPC.yaml
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-user-def-VPC.yaml@main
       with: 
         cluster_name: ${{ github.event.inputs.cluster_name }}
         subnets: ${{ github.event.inputs.subnets }}
         vpc-id: ${{ github.event.inputs.vpc-id }}
         
    setup_infra_components:
-      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
       needs: create_cluster
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         
    setup_angular_app:
-      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
       needs: setup_infra_components
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         angular_version: ${{ github.event.inputs.angular_name }}
-        
+        app_name: angular
    setup_react_app:
-      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
       needs: setup_infra_components
       with:
+        app_name: react
         cluster_name: ${{ github.event.inputs.cluster_name }}
         react_version: ${{ github.event.inputs.react_version }}
  
