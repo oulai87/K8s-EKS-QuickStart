@@ -5,12 +5,10 @@ on:
       cluster_name:
         description: 'Enter cluster name'
         required: true
-  workflow_call:
-    inputs:
-      cluster_name:
-        required: true
-        type: string
-
+  workflow_run:
+    workflows: ["Deploy-EKS-user-def-VPC"]
+    branches: [main]
+    
 jobs:
   helm_install:
     name: "Helm_Install"
@@ -21,6 +19,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: Get context
+        run: echo ${{ github.event.workflow_run }}
+        if: ${{ github.event_name == 'workflow_run' }}
         
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
