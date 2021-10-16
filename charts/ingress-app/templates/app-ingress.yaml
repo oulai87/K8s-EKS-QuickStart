@@ -1,0 +1,22 @@
+{{- $secret := default .Chart.Name (index (lookup "v1" "Service" "nginx-ingress" "nginx-ingress").status.loadBalancer.ingress 0).hostname }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: k8s-qs-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: "{{ $secret }}"
+      http:
+        paths:
+          - path: "/angular-app"
+            backend:
+              serviceName: angular-app
+              servicePort: 80
+          - path: "/react-app"
+            backend:
+              serviceName: react-app
+              servicePort: 80
+   
