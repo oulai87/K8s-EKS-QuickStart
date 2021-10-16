@@ -86,5 +86,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
         working-directory: .
-      - name: cluster_name
-        run: echo ${{github.event.inputs.cluster_name}}
+        
+  helm:
+    needs: terraform
+    uses: Mkejriwal270/K8s-EKS-Quickstart/.github/workflows/Update-Infra-Helm.yaml@main
+    with:
+      cluster_name: ${{ github.event.inputs.cluster_name }}
+
