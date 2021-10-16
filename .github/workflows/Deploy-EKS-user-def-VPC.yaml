@@ -88,3 +88,9 @@ jobs:
         working-directory: .
       - name: cluster_name
         run: echo ${{github.event.inputs.cluster_name}}
+        
+  helm:
+    uses: $repo/.github/workflows/Update-Infra-Helm.yaml@HEAD
+    with:
+      repo: ${{github.repository}}
+      cluster_name: ${{github.event.inputs.cluster_name}}
