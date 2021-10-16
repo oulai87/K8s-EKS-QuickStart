@@ -12,7 +12,18 @@ on:
        app_name:
           description: Enter the app name without demo suffix
           required: true
-  
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+      cluster_name:
+        type: string     
+        required: true
+      app_name:
+        type: string
+        required: true
+
 jobs:
   docker-build:
     name: "Docker-build"
