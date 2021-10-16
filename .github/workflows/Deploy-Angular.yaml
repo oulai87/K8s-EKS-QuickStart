@@ -42,3 +42,4 @@ jobs:
         
       - name: Helm update
         run: helm upgrade angular-app --install
+        working-directory: ./charts/app/angular-app
