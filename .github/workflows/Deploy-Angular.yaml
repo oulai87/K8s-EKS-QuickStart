@@ -41,5 +41,5 @@ jobs:
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
         
       - name: Helm update
-        run: helm upgrade angular-app --install
+        run: helm upgrade angular-app . --install
         working-directory: ./charts/app/angular-app
