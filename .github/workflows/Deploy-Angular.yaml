@@ -35,5 +35,8 @@ jobs:
           docker tag k8s-quickstart-react:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-react:latest
           docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-react:latest
         
-      
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
         
+      - name: Helm update
+        run: helm upgrade angular-app --install
