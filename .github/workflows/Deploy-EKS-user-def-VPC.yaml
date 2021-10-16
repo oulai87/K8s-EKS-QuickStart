@@ -91,6 +91,6 @@ jobs:
         
   helm:
     needs: terraform
-    uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
+    uses: $GITHUB_REPOSITORY/.github/workflows/Update-Infra-Helm.yaml@main
     with:
       cluster_name: ${{github.event.inputs.cluster_name}}
