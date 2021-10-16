@@ -32,8 +32,8 @@ jobs:
       - name: Docker build and tag
         run: |
           docker build -t k8s-quickstart-react .
-          docker tag k8s-quickstart-react:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-react:latest
-          docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-react:latest
+          docker tag k8s-quickstart-react:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-react:${{github.event.inputs.version}}
+          docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-react:${{github.event.inputs.version}}
         
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
