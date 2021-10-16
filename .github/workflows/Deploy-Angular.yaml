@@ -6,7 +6,9 @@ on:
        version:
           description: Enter the app version
           required: true
-      
+       cluster_name:
+          description: Enter the cluster name
+          required: true
   
 jobs:
   docker-build:
