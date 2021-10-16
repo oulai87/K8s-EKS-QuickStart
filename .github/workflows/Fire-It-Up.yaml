@@ -1,0 +1,48 @@
+name: "Fire-It-Up"
+on:
+  workflow_dispatch:
+    inputs:
+      cluster_name:
+        description: 'Enter cluster name'
+        required: true
+      subnets:
+        description: 'Enter space-separated subnet values'     
+        required: true
+      vpc-id:
+        description: 'Enter vpc ID'
+        required: true
+      angular_version:
+        description: 'Enter app version for angular'
+        required: true
+      react_version:
+        description: 'Enter app version for react'
+        required: true
+       
+jobs:
+   create_cluster:
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-user-def-VPC.yaml
+      with: 
+        cluster_name: ${{ github.event.inputs.cluster_name }}
+        subnets: ${{ github.event.inputs.subnets }}
+        vpc-id: ${{ github.event.inputs.vpc-id }}
+        
+   setup_infra_components:
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml
+      needs: create_cluster
+      with:
+        cluster_name: ${{ github.event.inputs.cluster_name }}
+        
+   setup_angular_app:
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml
+      needs: setup_infra_components
+      with:
+        cluster_name: ${{ github.event.inputs.cluster_name }}
+        angular_version: ${{ github.event.inputs.angular_name }}
+        
+   setup_react_app:
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml
+      needs: setup_infra_components
+      with:
+        cluster_name: ${{ github.event.inputs.cluster_name }}
+        react_version: ${{ github.event.inputs.react_version }}
+ 
