@@ -90,6 +90,6 @@ jobs:
         run: echo ${{github.event.inputs.cluster_name}}
         
   helm:
-    uses: ${{github.event.repository.name}}/.github/workflows/Update-Infra-Helm.yaml@HEAD
+    uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@HEAD
     with:
       cluster_name: ${{github.event.inputs.cluster_name}}
