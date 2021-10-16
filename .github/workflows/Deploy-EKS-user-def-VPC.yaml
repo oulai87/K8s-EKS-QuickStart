@@ -12,6 +12,18 @@ on:
       vpc-id:
         description: 'Enter vpc ID'
         required: true
+        
+  workflow_call:
+    inputs:
+      cluster_name:
+        type: string
+        required: true
+      subnets:
+        type: string     
+        required: true
+      vpc-id:
+        type: string
+        required: true
 
 jobs:
   terraform:
@@ -92,4 +104,3 @@ jobs:
     uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
     with:
       cluster_name: ${{ github.event.inputs.cluster_name }}
-
