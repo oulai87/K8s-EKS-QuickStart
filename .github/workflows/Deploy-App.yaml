@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./app/${{github.event.inputs.app_name}}-demo
+        working-directory: "./app/${{github.event.inputs.app_name}}-demo"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
