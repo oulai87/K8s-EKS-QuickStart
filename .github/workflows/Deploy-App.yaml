@@ -23,7 +23,12 @@ on:
       app_name:
         type: string
         required: true
-
+    secrets:
+      aws-access-key-id:
+        required: true
+      aws-secret-access-key:
+        required: true
+        
 jobs:
   docker-build:
     name: "Docker-build"
