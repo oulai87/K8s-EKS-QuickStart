@@ -37,7 +37,7 @@ jobs:
       needs: setup_infra_components
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
-        angular_version: ${{ github.event.inputs.angular_name }}
+        version: ${{ github.event.inputs.angular_name }}
         app_name: angular
    setup_react_app:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
@@ -45,5 +45,5 @@ jobs:
       with:
         app_name: react
         cluster_name: ${{ github.event.inputs.cluster_name }}
-        react_version: ${{ github.event.inputs.react_version }}
+        version: ${{ github.event.inputs.react_version }}
  
