@@ -25,12 +25,21 @@ jobs:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         subnets: ${{ github.event.inputs.subnets }}
         vpc-id: ${{ github.event.inputs.vpc-id }}
+      secrets:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
         
    setup_infra_components:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
       needs: create_cluster
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
+      secrets:  
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
         
    setup_angular_app:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
@@ -39,6 +48,11 @@ jobs:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         version: ${{ github.event.inputs.angular_name }}
         app_name: angular
+      secrets:  
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
    setup_react_app:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
       needs: setup_infra_components
@@ -46,4 +60,8 @@ jobs:
         app_name: react
         cluster_name: ${{ github.event.inputs.cluster_name }}
         version: ${{ github.event.inputs.react_version }}
+      secrets:  
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
  
