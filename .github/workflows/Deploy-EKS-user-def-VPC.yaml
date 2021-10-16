@@ -1,6 +1,5 @@
 
 name: "Deploy-EKS-user-def-VPC"
-
 on:
   workflow_dispatch:
     inputs:
@@ -13,7 +12,7 @@ on:
       vpc-id:
         description: 'Enter vpc ID'
         required: true
-    
+
 jobs:
   terraform:
     name: "Terraform"
@@ -92,6 +91,6 @@ jobs:
         working-directory: .
 
   helm:
-     uses: .github/workflows/Update-Infra-Helm.yaml@HEAD
+     uses: ${{github.repository}}/.github/workflows/Update-Infra-Helm.yaml@HEAD
      with:
        cluster_name: ${{github.event.inputs.cluster_name}}
