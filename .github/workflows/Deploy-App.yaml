@@ -9,6 +9,9 @@ on:
        cluster_name:
           description: Enter the cluster name
           required: true
+       app_name:
+          description: Enter the app name without demo suffix
+          required: true
   
 jobs:
   docker-build:
@@ -16,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./app/angular-demo
+        working-directory: ./app/${{github.event.inputs.app_name}}-demo
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -33,13 +36,13 @@ jobs:
       
       - name: Docker build and tag
         run: |
-          docker build -t k8s-quickstart-angular .
-          docker tag k8s-quickstart-angular:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-angular:${{github.event.inputs.version}}
-          docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-angular:${{github.event.inputs.version}}
+          docker build -t k8s-quickstart-${{github.event.inputs.app_name}} .
+          docker tag k8s-quickstart-${{github.event.inputs.app_name}}:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{github.event.inputs.app_name}}:${{github.event.inputs.version}}
+          docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{github.event.inputs.app_name}}:${{github.event.inputs.version}}
         
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
         
       - name: Helm update
-        run: helm upgrade angular-app . --install
-        working-directory: ./charts/app/angular-app
+        run: helm upgrade ${{github.event.inputs.app_name}}-app . --install
+        working-directory: ./charts/app/${{github.event.inputs.app_name}}-app
