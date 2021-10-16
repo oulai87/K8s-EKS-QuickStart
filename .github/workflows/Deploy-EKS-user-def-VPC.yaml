@@ -37,9 +37,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          
-      - name: Get subnet IDs
-        run: echo ${{github.event.inputs.subnets}}
 
       - name: Terraform Format
         id: fmt
@@ -89,8 +86,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
         working-directory: .
-
-  helm:
-     uses: ${{github.repository}}/.github/workflows/Update-Infra-Helm.yaml@HEAD
-     with:
-       cluster_name: ${{github.event.inputs.cluster_name}}
+      - name: cluster_name
+        run: echo ${{github.event.inputs.cluster_name}}
