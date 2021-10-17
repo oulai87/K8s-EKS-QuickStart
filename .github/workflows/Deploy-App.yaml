@@ -41,7 +41,7 @@ jobs:
       - id: set-ver
         run: echo "::set-output name=version::${{github.event.inputs.version}}${{inputs.version}}"
       - id: set-cname
-        run: echo "::set-output name=clustername::${{github.event.inputs.cluster_name}}${{inputs.cluster_name}}"
+        run: echo "::set-output name=clustername::${{github.event.inputs.cluster_name}}"
 
 
   docker-build:
