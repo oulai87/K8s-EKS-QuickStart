@@ -44,7 +44,7 @@ jobs:
       needs: setup_infra_components
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
-        version: ${{ github.event.inputs.angular_name }}
+        version: ${{ github.event.inputs.angular_version }}
         app_name: "angular"
       secrets:  
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
