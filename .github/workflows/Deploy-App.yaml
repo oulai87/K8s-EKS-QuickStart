@@ -55,25 +55,19 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-        
-      - name: Next Step
-        run: |
-          echo "./app/${{needs.set-dir.outputs.workdir}}-demo"
-        working-directory: .
-
       
       - name: Login to ECR
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 051126537531.dkr.ecr.us-east-1.amazonaws.com
       
       - name: Docker build and tag
         run: |
-          docker build -t k8s-quickstart-${{github.event.inputs.app_name}} .
-          docker tag k8s-quickstart-${{github.event.inputs.app_name}}:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{github.event.inputs.app_name}}:${{github.event.inputs.version}}
-          docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{github.event.inputs.app_name}}:${{github.event.inputs.version}}
+          docker build -t k8s-quickstart-${{needs.set-dir.outputs.workdir}} .
+          docker tag k8s-quickstart-${{needs.set-dir.outputs.workdir}}:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-dir.outputs.workdir}}:${{github.event.inputs.version}}
+          docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-dir.outputs.workdir}}:${{github.event.inputs.version}}
         
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
         
       - name: Helm update
-        run: helm upgrade ${{github.event.inputs.app_name}}-app . --install
-        working-directory: ./charts/app/${{github.event.inputs.app_name}}-app
+        run: helm upgrade ${{needs.set-dir.outputs.workdir}}-app . --install
+        working-directory: ./charts/app/${{needs.set-dir.outputs.workdir}}-app
