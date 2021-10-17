@@ -44,7 +44,7 @@ jobs:
     needs: set-dir
     defaults:
       run:
-        working-directory: "./app/${{needs.job1.outputs.workdir}}-demo"
+        working-directory: "./app/${{needs.set-dir.outputs.workdir}}-demo"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -58,7 +58,7 @@ jobs:
         
       - name: Next Step
         run: |
-          echo "./app/${{needs.job1.outputs.workdir}}-demo"
+          echo "./app/${{needs.set-dir.outputs.workdir}}-demo"
         working-directory: .
 
       
