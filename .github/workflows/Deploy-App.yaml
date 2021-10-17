@@ -30,12 +30,21 @@ on:
         required: true
         
 jobs:
+  set-dir:
+    runs-on: ubuntu-latest
+    outputs:
+      workdir: ${{ steps.set-dir.outputs.workdir }}
+    steps:
+      - id: set-dir
+        run: echo "::set-output name=workdir::${{github.event.inputs.app_name}}${{inputs.app_name}}"
+  
   docker-build:
     name: "Docker-build"
     runs-on: ubuntu-latest
+    needs: set-dir
     defaults:
       run:
-        working-directory: "./app/${{github.event.inputs.app_name}}-demo"
+        working-directory: "./app/${{needs.job1.outputs.workdir}}-demo"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -49,7 +58,7 @@ jobs:
         
       - name: Next Step
         run: |
-          echo "./app/${{inputs.app_name}}-demo"
+          echo "./app/${{needs.job1.outputs.workdir}}-demo"
         working-directory: .
 
       
