@@ -46,16 +46,10 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-      
-      - name: Alpine Probe & Echo
-        uses: Kaizhe/alpine-echo@v1.0.0
-        with:
-          message: '${{github.event.inputs.app_name}}'
-        id: alpine_probe_echo
         
       - name: Next Step
         run: |
-          echo "What do you get" ${{ steps.alpine_probe_echo.outputs.action_fruit }}
+          echo "./app/${{github.event.inputs.app_name}}-demo"
         working-directory: .
 
       
