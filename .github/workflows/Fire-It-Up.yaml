@@ -19,29 +19,29 @@ on:
         required: true
        
 jobs:
-   create_cluster:
-      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-user-def-VPC.yaml@main
-      with: 
-        cluster_name: ${{ github.event.inputs.cluster_name }}
-        subnets: ${{ github.event.inputs.subnets }}
-        vpc-id: ${{ github.event.inputs.vpc-id }}
-      secrets:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        K8S_QS_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
-        
-   setup_infra_components:
-      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
-      needs: create_cluster
-      with:
-        cluster_name: ${{ github.event.inputs.cluster_name }}
-      secrets:  
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#   create_cluster:
+#      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-user-def-VPC.yaml@main
+#      with: 
+#        cluster_name: ${{ github.event.inputs.cluster_name }}
+#        subnets: ${{ github.event.inputs.subnets }}
+#        vpc-id: ${{ github.event.inputs.vpc-id }}
+#      secrets:
+#        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#        K8S_QS_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
+#        
+#   setup_infra_components:
+#      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
+#      needs: create_cluster
+#      with:
+#        cluster_name: ${{ github.event.inputs.cluster_name }}
+#      secrets:  
+#        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         
    setup_angular_app:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
-      needs: setup_infra_components
+#      needs: setup_infra_components
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         version: ${{ github.event.inputs.angular_name }}
@@ -52,7 +52,7 @@ jobs:
         
    setup_react_app:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
-      needs: setup_infra_components
+#      needs: setup_infra_components
       with:
         app_name: "react"
         cluster_name: ${{ github.event.inputs.cluster_name }}
