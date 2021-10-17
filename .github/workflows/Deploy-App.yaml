@@ -49,7 +49,7 @@ jobs:
         
       - name: Next Step
         run: |
-          echo "./app/${{github.event.inputs.app_name}}-demo"
+          echo "./app/${{inputs.app_name}}-demo"
         working-directory: .
 
       
