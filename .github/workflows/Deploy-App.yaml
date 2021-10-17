@@ -47,8 +47,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       
-      - name: print working dir
-        run: pwd
+      - name: Alpine Probe & Echo
+        uses: Kaizhe/alpine-echo@v1.0.0
+        with:
+          message: '${{github.event.inputs.app_name}}'
+        id: alpine_probe_echo
+        
+      - name: Next Step
+        run: |
+          echo "What do you get" ${{ steps.alpine_probe_echo.outputs.action_fruit }}
+        working-directory: .
+
       
       - name: Login to ECR
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 051126537531.dkr.ecr.us-east-1.amazonaws.com
