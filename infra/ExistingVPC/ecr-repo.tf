@@ -6,7 +6,7 @@ resource "aws_ecr_repository" "k8s_quickstart_angular" {
     scan_on_push = false
   }
 }
- 
+
 resource "aws_ecr_repository" "k8s_quickstart_react" {
   name                 = "k8s-quickstart-react"
   image_tag_mutability = "MUTABLE"

@@ -18,7 +18,7 @@ module "eks" {
     GithubOrg   = "terraform-aws-modules"
   }
 
-  vpc_id            = var.existing_vpc_id
+  vpc_id = var.existing_vpc_id
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
     disk_size = 20
