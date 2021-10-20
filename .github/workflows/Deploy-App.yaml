@@ -74,7 +74,7 @@ jobs:
       
       - name: Docker build and tag
         run: |
-           Account = $(aws sts get-caller-identity --output json | jq -r '.Account')
+           Account=$(aws sts get-caller-identity --output json | jq -r '.Account')
            aws ecr get-login-password --region ${{ github.event.inputs.region }} | docker login --username AWS --password-stdin ${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com
            docker build -t k8s-quickstart-${{needs.set-props.outputs.workdir}} .
            docker tag k8s-quickstart-${{needs.set-props.outputs.workdir}}:latest ${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
