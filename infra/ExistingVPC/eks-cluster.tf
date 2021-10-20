@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 module "eks" {
   source                          = "terraform-aws-modules/eks/aws"
@@ -61,4 +61,8 @@ variable "cluster_name" {
 }
 variable "subnet_ids" {
   type = list(string)
+}
+
+variable "region" {
+  type = string  
 }
