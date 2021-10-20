@@ -62,14 +62,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       
-      - name: Login to ECR
-        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 051126537531.dkr.ecr.us-east-1.amazonaws.com
-      
       - name: Docker build and tag
         run: |
-          docker build -t k8s-quickstart-${{needs.set-props.outputs.workdir}} .
-          docker tag k8s-quickstart-${{needs.set-props.outputs.workdir}}:latest 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
-          docker push 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
+           Account = $(aws sts get-caller-identity --output json | jq -r '.Account')
+           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${Account}.dkr.ecr.us-east-1.amazonaws.com
+           docker build -t k8s-quickstart-${{needs.set-props.outputs.workdir}} .
+           docker tag k8s-quickstart-${{needs.set-props.outputs.workdir}}:latest ${Account}.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
+           docker push ${Account}.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
         
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{needs.set-props.outputs.clustername}}
