@@ -27,3 +27,13 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = local.cluster_name
 }
+
+output "angular_repo_name" {
+  description = "ECR Repository for quickstart angular image"
+  value       = resource.aws_ecr_repository.k8s_quickstart_angular.name
+}
+
+output "react_repo_name" {
+  description = "ECR Repository for quickstart react image"
+  value       = resource.aws_ecr_repository.k8s_quickstart_react.name
+}
