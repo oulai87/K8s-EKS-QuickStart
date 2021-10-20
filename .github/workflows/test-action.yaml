@@ -1,0 +1,17 @@
+name: "Test-Action"
+on:
+  workflow_dispatch:
+
+jobs:
+  helm_install:
+    name: "Test Action"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra/ExistingVPC
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Print json values
+        run: cat terraform.tfstate | jq -r '.serial'
