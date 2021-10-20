@@ -75,9 +75,11 @@ jobs:
           export TF_VAR_existing_vpc_id=${{github.event.inputs.vpc-id}}
           export TF_VAR_subnet_ids=$li
           export TF_VAR_cluster_name=${{github.event.inputs.cluster_name}}
+          export TF_VAR_region=${{github.event.inputs.region}}
           echo "existing_vpc_id = \"${TF_VAR_existing_vpc_id}\"" > dev.tfvars
           echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
           echo "cluster_name = \"${TF_VAR_cluster_name}\"" >> dev.tfvars
+          echo "region = \"${TF_VAR_region}\"" >> dev.tfvars
           cat dev.tfvars
 
       - name: Terraform Init
@@ -104,7 +106,7 @@ jobs:
       - name: Get state
         run: |
              git status
-             git config --global user.email "mkejriwal270@gmail.com"
+             git config --global user.email "actions.user@gmail.com"
              git config --global user.name "Gh-Actions"
              git add infra/ExistingVPC/terraform.tfstate
              git commit -m "Workflow executed to deploy resources"
