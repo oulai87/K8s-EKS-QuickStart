@@ -9,9 +9,8 @@ module "eks" {
   subnets                         = var.subnet_ids
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
-  cluster_iam_role_name           = "VotingAppRole"
-  manage_cluster_iam_resources    = false
-  manage_worker_iam_resources     = false
+  manage_cluster_iam_resources    = true
+  manage_worker_iam_resources     = true
 
   tags = {
     Environment = "test"
@@ -20,7 +19,6 @@ module "eks" {
   }
 
   vpc_id            = var.existing_vpc_id
-  workers_role_name = "NodeInstanceRole"
   node_groups_defaults = {
     ami_type  = "AL2_x86_64"
     disk_size = 20
@@ -31,7 +29,6 @@ module "eks" {
       desired_capacity = 2
       max_capacity     = 2
       min_capacity     = 2
-      iam_role_arn     = "arn:aws:iam::051126537531:role/NodeInstanceRole"
 
       instance_types = ["t2.small"]
       capacity_type  = "SPOT"
