@@ -64,5 +64,5 @@ variable "subnet_ids" {
 }
 
 variable "region" {
-  type = string  
+  type = string
 }
