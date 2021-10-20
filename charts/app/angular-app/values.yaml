@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: 051126537531.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-angular
+  repository: ""
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

@@ -15,6 +15,9 @@ on:
         description: 'Enter vpc ID'
         required: true
 
+      region:
+        description: 'Enter region'
+        required: true
 jobs:
   helm-delete:
     name: "Helm-Delete"
@@ -31,7 +34,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{github.event.inputs.region}}
           
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
@@ -58,7 +61,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{github.event.inputs.region}}
           
       - name: Get subnet IDs
         run: echo ${{github.event.inputs.subnets}}

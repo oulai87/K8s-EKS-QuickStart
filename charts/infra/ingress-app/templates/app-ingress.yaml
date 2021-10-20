@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: "test-integrate-05c51f3e9cd66017.elb.us-east-1.amazonaws.com"
+    - host: {{ $secret }}
       http:
         paths:
           - path: "/angular-app"

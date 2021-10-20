@@ -17,6 +17,9 @@ on:
       react_version:
         description: 'Enter app version for react'
         required: true
+      region:
+        description: 'Enter AWS Region'
+        required: true
        
 jobs:
    create_cluster:
@@ -25,6 +28,7 @@ jobs:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         subnets: ${{ github.event.inputs.subnets }}
         vpc-id: ${{ github.event.inputs.vpc-id }}
+        region: ${{ github.event.inputs.region }}
       secrets:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -35,6 +39,7 @@ jobs:
       needs: create_cluster
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
+        region: ${{ github.event.inputs.region }}
       secrets:  
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -45,6 +50,7 @@ jobs:
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         version: ${{ github.event.inputs.angular_version }}
+        region: ${{ github.event.inputs.region }}
         app_name: "angular"
       secrets:  
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -57,6 +63,7 @@ jobs:
         app_name: "react"
         cluster_name: ${{ github.event.inputs.cluster_name }}
         version: ${{ github.event.inputs.react_version }}
+        region: ${{ github.event.inputs.region }}
       secrets:  
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 

@@ -11,6 +11,10 @@ on:
        app_name:
           description: Enter the app name without demo suffix
           required: true
+       region:
+          description: Enter the AWS region
+          required: true
+
   workflow_call:
     inputs:
       version:
@@ -20,6 +24,9 @@ on:
         type: string     
         required: true
       app_name:
+        type: string
+        required: true
+      region:
         type: string
         required: true
     secrets:
@@ -60,19 +67,19 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ github.event.inputs.region }}
       
       - name: Docker build and tag
         run: |
            Account = $(aws sts get-caller-identity --output json | jq -r '.Account')
-           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${Account}.dkr.ecr.us-east-1.amazonaws.com
+           aws ecr get-login-password --region ${{ github.event.inputs.region }} | docker login --username AWS --password-stdin ${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com
            docker build -t k8s-quickstart-${{needs.set-props.outputs.workdir}} .
-           docker tag k8s-quickstart-${{needs.set-props.outputs.workdir}}:latest ${Account}.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
-           docker push ${Account}.dkr.ecr.us-east-1.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
+           docker tag k8s-quickstart-${{needs.set-props.outputs.workdir}}:latest ${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
+           docker push ${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
         
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{needs.set-props.outputs.clustername}}
         
       - name: Helm update
-        run: helm upgrade ${{needs.set-props.outputs.workdir}}-app . --install
+        run: helm upgrade ${{needs.set-props.outputs.workdir}}-app . --install --set image.repository=${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}
         working-directory: ./charts/app/${{needs.set-props.outputs.workdir}}-app

@@ -5,11 +5,18 @@ on:
       cluster_name:
         description: 'Enter cluster name'
         required: true
+      region:
+        description: 'Enter AWS region'
+        required: true
   workflow_call:
     inputs:
       cluster_name:
         required: true
         type: string
+      region:
+        required: true
+        type: string
+      
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -41,7 +48,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{github.event.inputs.region}}
           
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
