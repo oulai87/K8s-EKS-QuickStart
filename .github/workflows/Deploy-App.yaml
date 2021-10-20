@@ -68,6 +68,9 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ github.event.inputs.region }}
+    
+      - name: Get AWS account name
+        run: aws sts get-caller-identity --output json | jq -r '.Account'
       
       - name: Docker build and tag
         run: |
