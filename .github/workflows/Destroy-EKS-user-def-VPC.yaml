@@ -39,8 +39,8 @@ jobs:
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
         
-      - name: Helm delete
-        run: helm del ingress-stack
+     # - name: Helm delete
+     #   run: helm del ingress-stack
     
   terraform-destroy:
     name: "Terraform"
