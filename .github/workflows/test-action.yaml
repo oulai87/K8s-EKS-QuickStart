@@ -24,4 +24,7 @@ jobs:
         run: cat terraform.tfstate | jq -r '.serial'
         
       - name: Get user details
-        run: aws sts get-caller-identity --output json | jq -r '.Arn'
+        run: |
+           user=aws sts get-caller-identity --output json | jq -r '.Arn'
+           echo `grep 'user/' $user | cut -d"\" -f2`
+            
