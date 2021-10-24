@@ -33,3 +33,5 @@ jobs:
                   --arg un "$username" \
                   '{userarn: $ua, username: $un, groups: ["system:masters"]}' )
            echo $JSON_STRING
+           map_users=[$JSON_STRING]
+           echo $map_users
