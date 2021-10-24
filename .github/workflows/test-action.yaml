@@ -26,5 +26,6 @@ jobs:
       - name: Get user details
         run: |
            user=`aws sts get-caller-identity --output json | jq -r '.Arn'`
-           echo `grep 'user/' $user | cut -d"\" -f2`
+           value=${user#*/}
+           echo $value
             
