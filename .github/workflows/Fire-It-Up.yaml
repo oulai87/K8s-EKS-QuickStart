@@ -2,15 +2,16 @@ name: "Fire-It-Up"
 on:
   workflow_dispatch:
     inputs:
+      vpc_exists:
+        description: 'Are you using an existing VPC? (true/false)'
+        required: true
       cluster_name:
         description: 'Enter cluster name'
         required: true
       subnets:
-        description: 'Enter space-separated subnet values'     
-        required: true
+        description: 'Enter space-separated existing subnet ids'    
       vpc-id:
-        description: 'Enter vpc ID'
-        required: true
+        description: 'Enter existing vpc ID'
       angular_version:
         description: 'Enter app version for angular'
         required: true
@@ -22,7 +23,7 @@ on:
         required: true
        
 jobs:
-   create_cluster:
+   create_cluster_in_existing_vpc:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-user-def-VPC.yaml@main
       with: 
         cluster_name: ${{ github.event.inputs.cluster_name }}
@@ -33,6 +34,18 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         K8S_QS_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
+      if : ${{github.events.inputs.vpc_exists}}
+
+   create_cluster_in_new_vpc:
+      uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-new-VPC.yaml@main
+      with: 
+        cluster_name: ${{ github.event.inputs.cluster_name }}
+        region: ${{ github.event.inputs.region }}
+      secrets:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        K8S_QS_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
+      if : ${{github.events.inputs.vpc_exists}}
         
    setup_infra_components:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
@@ -43,6 +56,7 @@ jobs:
       secrets:  
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      if : ${{!(github.events.inputs.vpc_exists)}}
         
    setup_angular_app:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
