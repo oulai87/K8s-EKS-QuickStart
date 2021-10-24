@@ -56,10 +56,21 @@ jobs:
      
       - name: Set Terraform Variables
         run: |
+          li=$(python -c "import json;print(json.dumps(list((\"${{github.event.inputs.subnets}}\").split(\" \"))))")
+          echo $li
+          userarn=`aws sts get-caller-identity --output json | jq -r '.Arn'`
+          username=${userarn#*/}
+          echo $username
+          JSON_STRING=$( jq -n \
+                  --arg ua "$userarn" \
+                  --arg un "$username" \
+                  '{userarn: $ua, username: $un, groups: ["system:masters"]}' )
+          export TF_VAR_map_users=[$JSON_STRING]
           export TF_VAR_cluster_name=${{github.event.inputs.cluster_name}}
           export TF_VAR_region=${{github.event.inputs.region}}
           echo "cluster_name = \"${TF_VAR_cluster_name}\"" >> dev.tfvars
           echo "region = \"${TF_VAR_region}\"" >> dev.tfvars
+          echo "map_users = ${TF_VAR_map_users}" >> dev.tfvars
           cat dev.tfvars
 
       - name: Terraform Init
