@@ -33,6 +33,7 @@ jobs:
           run: echo ${{ github.events.inputs.vpc_exists}}
           if : ${{ github.events.inputs.vpc_exists == 'true' }}
         - name: Get value if true
+          run: echo ${{ github.events.inputs.vpc_exists }}
           if: ${{ github.events.inputs.vpc_exists }}
    
    create_cluster_in_existing_vpc:
