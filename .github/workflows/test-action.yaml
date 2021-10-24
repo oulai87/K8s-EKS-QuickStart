@@ -11,23 +11,23 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Get value
-          run: echo ${{ github.events.inputs.vpc_exists }}
+          run: echo ${{ github.event.inputs.vpc_exists }}
           
         - name: Get value if true string
-          run: echo ${{ github.events.inputs.vpc_exists }}
-          if : ${{ github.events.inputs.vpc_exists == 'true' }}
+          run: echo ${{ github.event.inputs.vpc_exists }}
+          if : ${{ github.event.inputs.vpc_exists == 'true' }}
           
         - name: Get value if true
-          run: echo ${{ github.events.inputs.vpc_exists }}
-          if: ${{ github.events.inputs.vpc_exists }}
+          run: echo ${{ github.event.inputs.vpc_exists }}
+          if: ${{ github.event.inputs.vpc_exists }}
           
         - name: Get value if fase
-          run: echo ${{ github.events.inputs.vpc_exists }}
-          if: ${{ github.events.inputs.vpc_exists == 'false' }}
+          run: echo ${{ github.event.inputs.vpc_exists }}
+          if: ${{ github.event.inputs.vpc_exists == 'false' }}
         
         - name: Get value if fase
-          run: echo ${{ github.events.inputs.vpc_exists }}
-          if: ${{ !(github.events.inputs.vpc_exists) }}
+          run: echo ${{ github.event.inputs.vpc_exists }}
+          if: ${{ !(github.event.inputs.vpc_exists) }}
           
   helm_install:
     name: "Test Action"
