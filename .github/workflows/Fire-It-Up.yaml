@@ -45,18 +45,18 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         K8S_QS_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
-      if : ${{github.events.inputs.vpc_exists}}
+      if : ${{!github.events.inputs.vpc_exists}}
         
    setup_infra_components:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Update-Infra-Helm.yaml@main
-      needs: create_cluster
+      if: ${{ always() }}
+      needs: [create_cluster_in_existing_vpc,create_cluster_in_new_vpc]
       with:
         cluster_name: ${{ github.event.inputs.cluster_name }}
         region: ${{ github.event.inputs.region }}
       secrets:  
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      if : ${{!(github.events.inputs.vpc_exists)}}
         
    setup_angular_app:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
