@@ -11,8 +11,8 @@ module "eks" {
   cluster_endpoint_public_access  = true
   manage_cluster_iam_resources    = true
   manage_worker_iam_resources     = true
-  manage_aws_auth  = true
-  map_users    = var.map_users
+  manage_aws_auth                 = true
+  map_users                       = var.map_users
   tags = {
     Environment = "test"
     GithubRepo  = "terraform-aws-eks"
