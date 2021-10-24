@@ -1,8 +1,34 @@
 name: "Test-Action"
 on:
   workflow_dispatch:
+     inputs:
+      vpc_exists:
+        description: 'Are you using an existing VPC? (true/false)'
+        required: true
 
 jobs:
+  get_value:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Get value
+          run: echo ${{ github.events.inputs.vpc_exists}}
+          
+        - name: Get value if true string
+          run: echo ${{ github.events.inputs.vpc_exists}}
+          if : ${{ github.events.inputs.vpc_exists == 'true' }}
+          
+        - name: Get value if true
+          run: echo ${{ github.events.inputs.vpc_exists}}
+          if: ${{ github.events.inputs.vpc_exists }}
+          
+        - name: Get value if fase
+          run: echo ${{ github.events.inputs.vpc_exists}}
+          if: ${{ github.events.inputs.vpc_exists == 'false' }}
+        
+        - name: Get value if fase
+          run: echo ${{ github.events.inputs.vpc_exists}}
+          if: ${{ !(github.events.inputs.vpc_exists) }}
+          
   helm_install:
     name: "Test Action"
     runs-on: ubuntu-latest
