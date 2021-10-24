@@ -23,6 +23,18 @@ on:
         required: true
        
 jobs:
+   
+   get_value:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Get value
+          run: echo ${{ github.events.inputs.vpc_exists}}
+        - name: Get value if true string
+          run: echo ${{ github.events.inputs.vpc_exists}}
+          if : ${{ github.events.inputs.vpc_exists == 'true' }}
+        - name: Get value if true
+          if: ${{ github.events.inputs.vpc_exists }}
+   
    create_cluster_in_existing_vpc:
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-EKS-user-def-VPC.yaml@main
       with: 
