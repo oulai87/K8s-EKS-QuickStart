@@ -56,8 +56,6 @@ jobs:
      
       - name: Set Terraform Variables
         run: |
-          li=$(python -c "import json;print(json.dumps(list((\"${{github.event.inputs.subnets}}\").split(\" \"))))")
-          echo $li
           userarn=`aws sts get-caller-identity --output json | jq -r '.Arn'`
           username=${userarn#*/}
           echo $username
