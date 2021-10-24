@@ -26,7 +26,7 @@ jobs:
       - name: Get user details
         run: |
            userarn=`aws sts get-caller-identity --output json | jq -r '.Arn'`
-           username=${user#*/}
+           username=${userarn#*/}
            echo $username
            JSON_STRING=$( jq -n \
                   --arg ua "$userarn" \
