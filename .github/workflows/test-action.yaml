@@ -25,7 +25,10 @@ jobs:
         
       - name: Get user details
         run: |
-           user=`aws sts get-caller-identity --output json | jq -r '.Arn'`
-           value=${user#*/}
-           echo $value
-            
+           userarn=`aws sts get-caller-identity --output json | jq -r '.Arn'`
+           username=${user#*/}
+           JSON_STRING=$( jq -n \
+                  --arg ua "$userarn" \
+                  --arg un "$username" \
+                  '{userarn: $ua, username: $un, groups: ["system:masters"]}' )
+           echo $JSON_STRING
