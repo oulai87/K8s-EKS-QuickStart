@@ -3,17 +3,19 @@ name: "Destroy-EKS-user-def-VPC"
 on:
   workflow_dispatch:
     inputs:
+      vpc_exists:
+        description: 'Are you using an existing VPC? (true/false)'
+        required: true
+        
       cluster_name:
         description: 'Enter cluster name'
         required: true
         
       subnets:
         description: 'Enter space-separated subnet values'     
-        required: true
 
       vpc-id:
         description: 'Enter vpc ID'
-        required: true
 
       region:
         description: 'Enter region'
@@ -70,6 +72,14 @@ jobs:
         run: |
           li=$(python -c "import json;print(json.dumps(list((\"${{github.event.inputs.subnets}}\").split(\" \"))))")
           echo $li
+          userarn=`aws sts get-caller-identity --output json | jq -r '.Arn'`
+          username=${userarn#*/}
+          echo $username
+          JSON_STRING=$( jq -n \
+                  --arg ua "$userarn" \
+                  --arg un "$username" \
+                  '{userarn: $ua, username: $un, groups: ["system:masters"]}' )
+          export TF_VAR_map_users=[$JSON_STRING]
           export TF_VAR_existing_vpc_id=${{github.event.inputs.vpc-id}}
           export TF_VAR_subnet_ids=$li
           export TF_VAR_cluster_name=${{github.event.inputs.cluster_name}}
@@ -78,7 +88,29 @@ jobs:
           echo "subnet_ids = ${TF_VAR_subnet_ids}" >> dev.tfvars
           echo "cluster_name = \"${TF_VAR_cluster_name}\"" >> dev.tfvars
           echo "region = \"${TF_VAR_region}\"" >> dev.tfvars
+          echo "map_users = ${TF_VAR_map_users}" >> dev.tfvars
           cat dev.tfvars
+        if : ${{ github.event.inputs.vpc_exists == 'true' }}
+        
+    
+      - name: Set Terraform Variables
+        run: |
+          userarn=`aws sts get-caller-identity --output json | jq -r '.Arn'`
+          username=${userarn#*/}
+          echo $username
+          JSON_STRING=$( jq -n \
+                  --arg ua "$userarn" \
+                  --arg un "$username" \
+                  '{userarn: $ua, username: $un, groups: ["system:masters"]}' )
+          export TF_VAR_map_users=[$JSON_STRING]
+          export TF_VAR_cluster_name=${{github.event.inputs.cluster_name}}
+          export TF_VAR_region=${{github.event.inputs.region}}
+          echo "cluster_name = \"${TF_VAR_cluster_name}\"" >> dev.tfvars
+          echo "region = \"${TF_VAR_region}\"" >> dev.tfvars
+          echo "map_users = ${TF_VAR_map_users}" >> dev.tfvars
+          cat dev.tfvars
+        if: ${{ github.event.inputs.vpc_exists == 'false' }}
+
           
       - name: Terraform Init
         id: init
