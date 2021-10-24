@@ -60,6 +60,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         
    setup_angular_app:
+      if: ${{ always() }}
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
       needs: setup_infra_components
       with:
@@ -72,6 +73,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         
    setup_react_app:
+      if: ${{ always() }}
       uses: Mkejriwal270/K8s-EKS-QuickStart/.github/workflows/Deploy-App.yaml@main
       needs: setup_infra_components
       with:
