@@ -13,5 +13,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ github.event.inputs.region }}
+        
       - name: Print json values
         run: cat terraform.tfstate | jq -r '.serial'
+        
+      - name: Get user details
+        run: aws sts get-caller-identity --output json | jq -r '.Arn'
