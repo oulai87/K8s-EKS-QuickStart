@@ -84,5 +84,7 @@ jobs:
         run: aws eks update-kubeconfig --name ${{needs.set-props.outputs.clustername}}
         
       - name: Helm update
-        run: helm upgrade ${{needs.set-props.outputs.workdir}}-app . --install --set image.repository=${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}
+        run: |
+          Account=`aws sts get-caller-identity --output json | jq -r '.Account'`
+          helm upgrade ${{needs.set-props.outputs.workdir}}-app . --install --set image.repository=${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}
         working-directory: ./charts/app/${{needs.set-props.outputs.workdir}}-app
