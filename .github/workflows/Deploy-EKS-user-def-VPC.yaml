@@ -123,3 +123,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.K8S_QS_TOKEN }}
         working-directory: .
+        if: always
