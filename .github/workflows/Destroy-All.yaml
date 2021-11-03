@@ -1,4 +1,4 @@
-name: "Destroy-EKS-VPC"
+name: "Destroy-All"
 
 on:
   workflow_dispatch:
