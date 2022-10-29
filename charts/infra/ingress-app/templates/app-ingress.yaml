@@ -1,5 +1,5 @@
 {{- $secret := (index (lookup "v1" "Service" "nginx-ingress" "ingress-stack-nginx-ingress").status.loadBalancer.ingress 0).hostname }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: k8s-qs-ingress
