@@ -42,7 +42,7 @@ jobs:
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
         
       - name: Helm delete
-        run: helm del ingress-stack
+        run: helm uninstall ingress-stack -n nginx-ingress
     
   terraform-destroy-ExistingVPC:
     name: "Terraform_ExistingVPC"
@@ -56,8 +56,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.2
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -137,8 +137,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.2
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
