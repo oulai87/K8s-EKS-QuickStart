@@ -4,19 +4,22 @@ kind: Ingress
 metadata:
   name: k8s-qs-ingress
   namespace: default
-  annotations:
-    kubernetes.io/ingress.class: nginx
 spec:
   rules:
     - host: {{ $secret }}
       http:
         paths:
-          - path: "/angular-app"
+          - path: /angular-app
+            pathType: Prefix
             backend:
-              serviceName: angular-app
-              servicePort: 80
-          - path: "/react-app"
+              service:
+                name: angular-app
+                port:
+                  number: 80
+          - path: /react-app
+            pathType: Prefix
             backend:
-              serviceName: react-app
-              servicePort: 80
-   
+              service:
+                name: react-app
+                port:
+                  number: 80
