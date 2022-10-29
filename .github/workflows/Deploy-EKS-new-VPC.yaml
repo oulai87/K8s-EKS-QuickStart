@@ -40,8 +40,9 @@ jobs:
       - name: Get directory
         run: pwd
         
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.2
+
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1

@@ -6,8 +6,8 @@ module "eks" {
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
   tags = {
-        Environment = "test"
-        GithubRepo  = "K8s-EKS-QuickStart"
+    Environment = "test"
+    GithubRepo  = "K8s-EKS-QuickStart"
   }
   cluster_addons = {
     coredns = {
@@ -77,10 +77,10 @@ module "eks" {
       create_security_group          = true
       security_group_name            = "eks-managed-node-group-default"
       security_group_use_name_prefix = false
-      vpc_security_group_ids  = [aws_security_group.all_worker_mgmt.id]
-      subnet_ids     = module.vpc.private_subnets
-      instance_types = ["t2.small"]
-      capacity_type  = "SPOT"
+      vpc_security_group_ids         = [aws_security_group.all_worker_mgmt.id]
+      subnet_ids                     = module.vpc.private_subnets
+      instance_types                 = ["t2.small"]
+      capacity_type                  = "SPOT"
       k8s_labels = {
         Environment = "test"
         GithubRepo  = "K8s-EKS-QuickStart"
