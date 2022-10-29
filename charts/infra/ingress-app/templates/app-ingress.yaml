@@ -1,4 +1,4 @@
-{{- $secret := (index (lookup "v1" "Service" "nginx-ingress" "nginx-ingress").status.loadBalancer.ingress 0).hostname }}
+{{- $secret := (index (lookup "v1" "Service" "nginx-ingress" "ingress-stack-nginx-ingress").status.loadBalancer.ingress 0).hostname }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
