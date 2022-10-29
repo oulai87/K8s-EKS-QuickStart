@@ -57,7 +57,7 @@ jobs:
         run: |
           helm repo add nginx-stable https://helm.nginx.com/stable
           helm repo update
-          helm upgrade --install ingress-stack nginx-stable/nginx-ingress --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"="nlb" --namespace=nginx-ingress
+          helm upgrade --install ingress-stack nginx-stable/nginx-ingress --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"="nlb" --namespace=nginx-ingress --create-namespace
                                                                                                                 
         working-directory: ./charts/infra/ingress-stack
      
