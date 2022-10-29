@@ -44,11 +44,11 @@ jobs:
       clustername: ${{ steps.set-cname.outputs.clustername }}
     steps:
       - id: set-dir
-        run: echo "::set-output name=workdir::${{github.event.inputs.app_name}}${{inputs.app_name}}"
+        run: echo "workdir=${{github.event.inputs.app_name}}""  >> $GITHUB_OUTPUT
       - id: set-ver
-        run: echo "::set-output name=version::${{github.event.inputs.version}}${{inputs.version}}"
+        run: echo "version=${{github.event.inputs.version}}" >> $GITHUB_OUTPUT
       - id: set-cname
-        run: echo "::set-output name=clustername::${{github.event.inputs.cluster_name}}"
+        run: echo "clustername=${{github.event.inputs.cluster_name}}" >> $GITHUB_OUTPUT
 
 
   docker-build:

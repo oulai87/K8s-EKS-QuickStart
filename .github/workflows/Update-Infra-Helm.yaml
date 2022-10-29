@@ -54,7 +54,11 @@ jobs:
         run: aws eks update-kubeconfig --name ${{github.event.inputs.cluster_name}}
         
       - name: Helm install ingress stack
-        run: helm upgrade --install ingress-stack .
+        run: |
+          helm repo add nginx-stable https://helm.nginx.com/stable
+          helm repo update
+          helm upgrade --install ingress-stack nginx-stable/nginx-ingress --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"="nlb" --namespace=nginx-ingress
+                                                                                                                
         working-directory: ./charts/infra/ingress-stack
      
       - name: Sleep for 30 seconds
