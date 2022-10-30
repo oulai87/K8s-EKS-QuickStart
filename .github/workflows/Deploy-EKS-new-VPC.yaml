@@ -65,8 +65,8 @@ jobs:
                   --arg un "$username" \
                   '{userarn: $ua, username: $un, groups: ["system:masters"]}' )
           export TF_VAR_map_users=[$JSON_STRING]
-          export TF_VAR_cluster_name=${{github.event.inputs.cluster_name}}
-          export TF_VAR_region=${{github.event.inputs.region}}
+          export TF_VAR_cluster_name=${{ github.event.inputs.cluster_name }}
+          export TF_VAR_region=${{ github.event.inputs.region }}
           echo "cluster_name = \"${TF_VAR_cluster_name}\"" >> dev.tfvars
           echo "region = \"${TF_VAR_region}\"" >> dev.tfvars
           echo "map_users = ${TF_VAR_map_users}" >> dev.tfvars
