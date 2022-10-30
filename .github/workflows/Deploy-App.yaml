@@ -44,7 +44,9 @@ jobs:
       clustername: ${{ steps.set-cname.outputs.clustername }}
     steps:
       - id: set-dir
-        run: echo "workdir=${{ github.event.inputs.app_name }}"  >> $GITHUB_OUTPUT
+        run:|
+          echo "${{ github.event.inputs.app_name }}"
+          echo "workdir=${{ github.event.inputs.app_name }}"  >> $GITHUB_OUTPUT
       - id: set-ver
         run: echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
       - id: set-cname
@@ -68,7 +70,7 @@ jobs:
     
       - name: Get AWS account name
         run: aws sts get-caller-identity --output json | jq -r '.Account'
-        working-directory: ./charts/app/${{needs.set-props.outputs.workdir}}-app
+        working-directory: charts/app/${{ needs.set-props.outputs.workdir }}-app
 
       - name: Docker build and tag
         run: |
@@ -77,14 +79,14 @@ jobs:
            docker build -t k8s-quickstart-${{ needs.set-props.outputs.workdir }} .
            docker tag k8s-quickstart-${{ needs.set-props.outputs.workdir }}:latest ${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
            docker push ${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}}:${{needs.set-props.outputs.version}}
-        working-directory: ./charts/app/${{ needs.set-props.outputs.workdir }}-app
+        working-directory: charts/app/${{ needs.set-props.outputs.workdir }}-app
 
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --name ${{needs.set-props.outputs.clustername}}
-        working-directory: ./charts/app/${{ needs.set-props.outputs.workdir }}-app
+        working-directory: charts/app/${{ needs.set-props.outputs.workdir }}-app
 
       - name: Helm update
         run: |
           Account=`aws sts get-caller-identity --output json | jq -r '.Account'`
           helm upgrade ${{needs.set-props.outputs.workdir}}-app . --install --set image.repository=${Account}.dkr.ecr.${{ github.event.inputs.region }}.amazonaws.com/k8s-quickstart-${{needs.set-props.outputs.workdir}} --set image.tag=${{needs.set-props.outputs.version}}
-        working-directory: ./charts/app/${{ needs.set-props.outputs.workdir }}-app
+        working-directory: charts/app/${{ needs.set-props.outputs.workdir }}-app
