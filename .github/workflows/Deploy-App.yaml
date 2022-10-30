@@ -44,7 +44,7 @@ jobs:
       clustername: ${{ steps.set-cname.outputs.clustername }}
     steps:
       - id: set-dir
-        run:|
+        run: |
           echo "${{ github.event.inputs.app_name }}"
           echo "workdir=${{ github.event.inputs.app_name }}"  >> $GITHUB_OUTPUT
       - id: set-ver
