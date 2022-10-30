@@ -9,6 +9,9 @@ COPY ./ /usr/local/app/
 # Install all the dependencies
 RUN npm install
 
+# Set NODE_OPTIONS environment variable to --openssl-legacy-provider
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 # Generate the build of the application
 RUN npm run build
 
