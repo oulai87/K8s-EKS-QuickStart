@@ -45,10 +45,10 @@ jobs:
     steps:
       - id: set-dir
         run: |
-          echo "${{ github.event.inputs.app_name }}"
-          echo "workdir=${{ github.event.inputs.app_name }}"  >> $GITHUB_OUTPUT
+          echo "${{ github.event.inputs.app_name || inputs.app_name }}"
+          echo "workdir=${{ github.event.inputs.app_name || inputs.app_name }}"  >> $GITHUB_OUTPUT
       - id: set-ver
-        run: echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        run: echo "version=${{ github.event.inputs.version || inputs.version }}" >> $GITHUB_OUTPUT
       - id: set-cname
         run: echo "clustername=${{ github.event.inputs.cluster_name }}" >> $GITHUB_OUTPUT
 
