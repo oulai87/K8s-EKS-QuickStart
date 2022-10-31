@@ -20,6 +20,15 @@ on:
       region:
         description: 'Enter region'
         required: true
+      
+      angular_version:
+        description: 'Enter app version for angular'
+        required: true
+
+      react_version:
+        description: 'Enter app version for react'
+        required: true
+
 jobs:
   helm-delete:
     name: "Helm-Delete"
@@ -43,7 +52,24 @@ jobs:
         
       - name: Helm delete
         run: helm uninstall ingress-stack -n nginx-ingress
+  
+  ECR-delete-images:
+    name: "ECR-Repo-Delete"
+    runs-on: ubuntu-latest  
+    steps:
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{github.event.inputs.region}}
     
+      - name: Delete ECR image
+        run: |
+          aws ecr batch-delete-image --repository-name k8s-quickstart-angular --image-ids imageTag=${{github.event.inputs.angular_version}}
+          aws ecr batch-delete-image --repository-name k8s-quickstart-react --image-ids imageTag=${{github.event.inputs.react_version}}
+          
   terraform-destroy-ExistingVPC:
     name: "Terraform_ExistingVPC"
     runs-on: ubuntu-latest
